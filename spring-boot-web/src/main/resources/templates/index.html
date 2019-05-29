@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title th:text="${title}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
 </head>
 <body>
-	<h1 th:text="${title}"></h1>
-	
+	<h1 class="color-blue" th:text="${title}"></h1>
+	<h2 class="color-green">Decorating Testing</h2>
+	<img alt="" th:src="@{/images/spring.png}"></img>
 </body>
 </html>

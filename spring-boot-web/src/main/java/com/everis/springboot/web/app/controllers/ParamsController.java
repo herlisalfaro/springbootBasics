@@ -1,5 +1,7 @@
 package com.everis.springboot.web.app.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/params")
 public class ParamsController {
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String index() {
-	return "param/index";
+	return "params/index";
     }
     
     @GetMapping("/string")
@@ -18,4 +20,25 @@ public class ParamsController {
 	model.addAttribute("result", "Sent Text: " + text);
 	return "params/check";
     }
+    
+    @GetMapping("/mixed-params")
+    public String param(@RequestParam String salute, @RequestParam Integer number, Model model) {
+	model.addAttribute("result", "Salute is: '" + salute + "' and number is: '" + number + "'");
+	return "params/check";
+    }
+    
+    @GetMapping("/mixed-params-request")
+    public String param(HttpServletRequest request, Model model) {
+	String salute = request.getParameter("salute");
+	Integer number = null;
+	try {
+	number = Integer.parseInt(request.getParameter("number"));
+	} catch(NumberFormatException e) {
+	    number = 0;
+	}
+	model.addAttribute("result", "Salute is: '" + salute + "' and number is: '" + number + "'");
+	return "params/check";
+    }
+
+
 }
