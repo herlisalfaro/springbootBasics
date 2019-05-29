@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 Manifest-Version: 1.0
 Implementation-Title: spring-boot-di
 Implementation-Version: 0.0.1-SNAPSHOT
 Build-Jdk-Spec: 1.8
 Created-By: Maven Integration for Eclipse
 
+=======
+Manifest-Version: 1.0
+Implementation-Title: spring-boot-di
+Implementation-Version: 0.0.1-SNAPSHOT
+Build-Jdk-Spec: 1.8
+Created-By: Maven Integration for Eclipse
+
+>>>>>>> c213ac541538a809bcc8f0582fef96ce1d218d25
