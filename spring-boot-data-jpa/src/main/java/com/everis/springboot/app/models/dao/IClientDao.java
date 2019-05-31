@@ -1,0 +1,13 @@
+package com.everis.springboot.app.models.dao;
+
+import java.util.List;
+
+import com.everis.springboot.app.models.entity.Client;
+
+public interface IClientDao {
+    
+    public List<Client> getAll();
+    
+    public void save(Client client);
+
+}
