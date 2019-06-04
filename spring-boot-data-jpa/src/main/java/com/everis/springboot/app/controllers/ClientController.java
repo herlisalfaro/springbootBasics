@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.everis.springboot.app.models.entity.Client;
 import com.everis.springboot.app.models.service.IClientService;
+import com.everis.springboot.app.util.paginator.PageRender;
 
 @Controller
 @SessionAttributes("client")
@@ -23,9 +25,13 @@ public class ClientController {
     private IClientService clientService;
     
     @RequestMapping(value="/listing", method = RequestMethod.GET)
-    public String clientListing(Model model) {
+    public String clientListing(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+	Pageable pageRequest = PageRequest.of(page, 5);
+	Page<Client> clients = clientService.findAll(pageRequest);
+	PageRender<Client> pageRender = new PageRender<>("/listing", clients);
 	model.addAttribute("title", "CLIENTS' LIST");
-	model.addAttribute("clients", clientService.findAll());
+	model.addAttribute("clients", clients);
+	model.addAttribute("page", pageRender);
 	return "listing";
 	
     }
