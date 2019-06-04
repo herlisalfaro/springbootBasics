@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import com.everis.springboot.app.models.entity.Client;
 
@@ -16,24 +16,32 @@ public class ClientDaoImpl implements IClientDao {
     @PersistenceContext
     private EntityManager em;
 
-    
-
     @SuppressWarnings("unchecked")
-    @Transactional(readOnly = true)
     @Override
     public List<Client> getAll() {
-
 	List<Client> clientList = em.createQuery("from Client").getResultList();
 	return clientList;
     }
 
-
+    @Override
+    public Client findOne(Long id) {
+	return em.find(Client.class, id);
+    }
 
     @Override
-    @Transactional
     public void save(Client client) {
-	em.persist(client);
-	
+	if (client.getId() != null && client.getId() > 0) {
+	    em.merge(client);
+	} else {
+	    em.persist(client);
+	}
+
+    }
+
+    @Override
+    public void delete(Long id) {
+	em.remove(findOne(id));
+
     }
 
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import javax.validation.constraints.*;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,17 +19,24 @@ public class Client implements Serializable {
     private Long id;
 
     @Column(name = "NAME")
+    @NotEmpty
+    @Size(min=4, max=12)
     private String name;
 
     @Column(name = "SURNAME")
+    @NotEmpty
+    @Size(min=4, max=12)
     private String surname;
 
     @Column(name = "EMAIL")
+    @NotEmpty
+    @Email
     private String email;
 
     @Column(name = "CREATED_AT")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern= "yyyy-MM-dd")
+    @NotNull
     private Date createdAt;
 
     private static final long serialVersionUID = 1L;

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleag.org">
+<head th:fragment="head">
+<meta charset="UTF-8" />
+<title th:text="' Spring Boot: MVC + Thymeleaf + JPA - '+ ${title}"></title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+
+	<header th:fragment="header">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">Spring Boot</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" href="#">Home
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/listing}">Clients</a></li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" type="search"
+						placeholder="Search" aria-label="Search">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				</form>
+			</div>
+		</nav>
+		
+		<div class= "alert alert-success" th:if="${success != null}" th:text="${success}"></div>
+		<div class= "alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+		<div class= "alert alert-warning" th:if="${warning != null}" th:text="${warning}"></div>
+		<div class= "alert alert-info" th:if="${info != null}" th:text="${info}"></div>
+		
+	</header>
+
+	<div class="container"></div>
+
+	<footer th:fragment="footer" class="container">
+
+		<hr />
+		<img th:src="@{/images/spring.png}" width="200px" class="img-fluid"
+			alt="Spring Logo">
+		<p>
+			Powered by <a href="https://projects.spring.io/spring-boot/">Spring
+				Boot</a> and <a href="http://www.thymeleaf.org">Thymeleaf</a>
+		</p>
+		<p>
+			Este proyecto fue desarrollado en IDE Eclipse + Spring Plugins (STS
+			Spring Tools), en el curso de <a href="https://www.udemy.com/">
+				Udemy</a>, alumno Herli S. Alfaro, profesor Andrés Guzmán.<br /> &copy;
+			Company 2019, Inc. Todos los derechos reservados. Términos de uso y
+			privacidad. <br />
+		</p>
+		<hr />
+		<script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+	</footer>
+</body>
+</html>
