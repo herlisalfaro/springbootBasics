@@ -1,10 +1,8 @@
 package com.everis.springboot.app.models.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-
+import java.util.*;
 import javax.persistence.*;
-import javax.persistence.Table;
 import javax.validation.constraints.*;
 
 
@@ -39,6 +37,16 @@ public class Client implements Serializable {
     @NotNull
     private Date createdAt;
     
+    @OneToMany(mappedBy="clientBearer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Bill> bills;
+    
+    
+    
+    public Client() {
+	bills = new ArrayList<Bill>();
+    }
+
+
     private String picture;
 
     
@@ -90,10 +98,20 @@ public class Client implements Serializable {
         this.picture = picture;
     }
 
-    public static long getSerialversionuid() {
-	return serialVersionUID;
+   
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
     
+    public void addBill(Bill bill) {
+	this.bills.add(bill);
+    }
+
+
     private static final long serialVersionUID = 1L;
 
 }
