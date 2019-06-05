@@ -38,8 +38,9 @@ public class Client implements Serializable {
     @DateTimeFormat(pattern= "yyyy-MM-dd")
     @NotNull
     private Date createdAt;
+    
+    private String picture;
 
-    private static final long serialVersionUID = 1L;
     
     public Long getId() {
 	return id;
@@ -81,8 +82,18 @@ public class Client implements Serializable {
 	this.createdAt = createdAt;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     public static long getSerialversionuid() {
 	return serialVersionUID;
     }
+    
+    private static final long serialVersionUID = 1L;
 
 }
