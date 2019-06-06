@@ -8,7 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bills")
+@Table(name ="bills")
 public class Bill implements Serializable {
 
     @Id
@@ -27,7 +27,7 @@ public class Bill implements Serializable {
     private Client clientBearer;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bill_id")
+    @JoinColumn(name ="bill_id")
     private List<BillItem> items;
 
     public Bill() {
@@ -98,7 +98,6 @@ public class Bill implements Serializable {
 	for (int i = 0; i < size; i++) {
 	    total += items.get(i).totalAmount();
 	}
-
 	return total;
     }
 

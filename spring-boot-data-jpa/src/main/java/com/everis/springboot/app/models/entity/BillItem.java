@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bills_items")
+@Table(name ="bill_items")
 public class BillItem implements Serializable {
 
     @Id
@@ -15,7 +15,7 @@ public class BillItem implements Serializable {
     private Integer amount;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "producto_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public Long getId() {

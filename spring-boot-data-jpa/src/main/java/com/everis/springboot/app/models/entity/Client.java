@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "clients")
+@Table(name ="clients")
 public class Client implements Serializable {
 
     @Id

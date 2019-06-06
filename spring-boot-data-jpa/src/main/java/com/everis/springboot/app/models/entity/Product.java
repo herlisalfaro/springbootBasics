@@ -6,7 +6,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Table(name= "products")
+@Table(name="products")
 public class Product implements Serializable {
 
     @Id
