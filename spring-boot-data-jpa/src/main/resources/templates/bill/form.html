@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head" />
+
+<body>
+    <header th:replace="layout/layout :: header" />
+
+    <div class="container py-4">
+        <div class="card bg-dark text-white">
+            <div class="card-header" th:text="${title}"></div>
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a class="btn btn-dark btn-xs" th:href="@{'/look/' + ${bill.clientBearer.id}}" th:text="'&laquo; Back'"></a>
+                </h4>
+
+                <form th:action="@{/bill/form/}" th:object="${bill}" method="post">
+
+                    <div class="form-group row">
+                        <label for="Client" class="col-sm-2 col-form-label" th:text="'Client'" />
+                        <div class="col-sm-6">
+                            <input th:value= "${bill.clientBearer.name} +'  '+ ${bill.clientBearer.surname}" class="form form-control" disabled="disabled" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="Description" class="col-sm-2 col-form-label" th:text="'Description'" />
+                        <div class="col-sm-6">
+                            <input type="text" th:field="*{description}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Observations" class="col-sm-2 col-form-label" th:text="'Observations'" />
+                        <div class="col-sm-6">
+                            <textarea th:field="*{observations}" class="form-control" />
+                        </div>
+                    
+                     <div class="form-group row">
+                        <label for="product_search" class="col-sm-2 col-form-label" th:text="'Product Search'" />
+                        <div class="col-sm-6">
+                            <input type="text" name="product_search" id="product_search" class="form-control" />
+                        </div>
+
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">    
+                    <input type="submit" th:value="${title}" class="btn btn-secondary" />
+                    </div>
+                </div>
+            </form>
+		</div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <footer th:replace="layout/layout :: footer" />
+    <script th:replace ="bill/js/autocomplete-products :: javascript"></script>
+</body>
+</html>

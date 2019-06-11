@@ -6,6 +6,7 @@ import org.springframework.data.domain.*;
 
 
 import com.everis.springboot.app.models.entity.Client;
+import com.everis.springboot.app.models.entity.Product;
 
 public interface IClientService {
 
@@ -18,4 +19,6 @@ public interface IClientService {
     public Client findOne(Long id);
 
     public void delete(Long id);
+    
+    public List<Product> findByName(String term);
 }

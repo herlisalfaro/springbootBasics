@@ -10,13 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import com.everis.springboot.app.models.dao.IDaoClient;
+import com.everis.springboot.app.models.dao.IDaoProduct;
 import com.everis.springboot.app.models.entity.Client;
+import com.everis.springboot.app.models.entity.Product;
 
 @Service
 public class ClientServiceImpl implements IClientService {
 
     @Autowired
     private IDaoClient daoClient;
+    
+    @Autowired
+    private IDaoProduct daoProduct;
 
     @Override
     @Transactional(readOnly = true)
@@ -49,6 +54,12 @@ public class ClientServiceImpl implements IClientService {
     @Transactional(readOnly = true)
     public Page<Client> findAll(Pageable pageable) {
 	return daoClient.findAll(pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findByName(String term) {
+	return daoProduct.findByName(term);
     }
 
 }

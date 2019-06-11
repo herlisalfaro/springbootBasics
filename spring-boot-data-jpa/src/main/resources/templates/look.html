@@ -13,7 +13,11 @@
         <div class="card bg-light">
             <div class="card-header" th:text="${title}"></div>
             <div class="card-body">
-
+                <h4 class="card-title">
+                    <a th:href="@{'/bill/form/' + ${client.id}}" class="btn btn-secondary btn-xs"
+                                    th:text="'Create New Bill'"></a>
+                </h4>
+                
                 <img th:if="${#strings.length(client.picture) > 0}" class="img-thumbnail rounded float-left" style="max-width: 25%;"
                     th:src="@{'/uploads/'} + ${client.picture}" th:alt="${client.picture}">
 
