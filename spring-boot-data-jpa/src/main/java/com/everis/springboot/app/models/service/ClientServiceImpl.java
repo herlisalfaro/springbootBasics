@@ -59,7 +59,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     @Transactional(readOnly = true)
     public List<Product> findByName(String term) {
-	return daoProduct.findByName(term);
+	return daoProduct.findByNameLikeIgnoreCase("%"+term+"%");
     }
 
 }

@@ -3,44 +3,43 @@
 
 <body>
 
-    <script type="text/javascript" th:fragment="javascript">
+	<script type="text/javascript" th:fragment="javascript">
 
-        $(document).ready(function () {
+		$(document).ready(function () {
 
-            $("#product_search").autocomplete({
+			$("#product_search").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: "/bill/product-load/" + request.term,
+						dataType: "json",
+						data: {
+							term: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.name,
+									price: item.price,
+								};
+							}));
+						},
+					});
+				},
+				select: function (event, ui) {
+					//$("#product_search").val(ui.item.label);
 
-                //Muestra los datos de los productos para el autocomplete
-                source: function (request, response) {
-                    $.ajax({
-                        url: "/bill/product-load/" + request.term,
-                        dataType: "json",
-                        data: {
-                            term: request.term
-                        },
-                        success: function (data) {
-                            response($.map(data, function (item) {
-                                return {
-                                    value: item.id,
-                                    label: item.name,
-                                    price: item.price,
-                                };
-                            }));
-                        },
-                        //Selecciona los valores que han salido en el source para la tarea que venga ahora
-                        select: function (event, ui) {
-                            $("#product_search").val(ui.item.label);
-                            return false;
-                        }
-                    });
-                }
-            });
-        }
+					var line = $("#billItemsTemplate").html();
+					line = line.replace(/{ID}/g, ui.item.id);
+					line = line.replace(/{NAME}/g, ui.item.label);
+					line = line.replace(/{PRICE}/g, ui.item.price);
 
+					$("#loadProductItems tbody").append(line);
+					return false;
+				}
+			});
 
-        );
-
-
-    </script>
+		});
+</script>
 </body>
 
 </html>
