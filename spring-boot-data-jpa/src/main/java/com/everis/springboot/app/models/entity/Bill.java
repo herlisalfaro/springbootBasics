@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name ="bills")
@@ -15,6 +16,7 @@ public class Bill implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String description;
 
     private String observations;
@@ -31,7 +33,7 @@ public class Bill implements Serializable {
     private List<BillItem> items;
 
     public Bill() {
-	items = new ArrayList<BillItem>();
+	this.items = new ArrayList<BillItem>();
     }
 
     @PrePersist

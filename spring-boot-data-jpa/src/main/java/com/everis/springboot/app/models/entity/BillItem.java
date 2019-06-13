@@ -37,6 +37,16 @@ public class BillItem implements Serializable {
     public Double totalAmount() {
 	return amount.doubleValue() * product.getPrice();
     }
+    
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+
 
     private static final long serialVersionUID = 1L;
 

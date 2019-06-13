@@ -51,10 +51,14 @@
 				}
 			});
 
+			$("form").submit(function(){
+				$("#billItemsTemplate").remove();
+				return;
+			});
 		});
 
 		var itemsHelper = {
-			totalCalc: function(id, price,amount) {
+			totalCalc: function(id, price, amount) {
 				$("#total_sum_" + id).html(parseInt(price) * parseInt(amount));
 				this.calculateGreatTotal();
 			},

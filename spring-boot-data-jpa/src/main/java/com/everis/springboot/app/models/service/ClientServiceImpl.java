@@ -8,9 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import com.everis.springboot.app.models.dao.IDaoBill;
 import com.everis.springboot.app.models.dao.IDaoClient;
 import com.everis.springboot.app.models.dao.IDaoProduct;
+import com.everis.springboot.app.models.entity.Bill;
 import com.everis.springboot.app.models.entity.Client;
 import com.everis.springboot.app.models.entity.Product;
 
@@ -22,6 +23,9 @@ public class ClientServiceImpl implements IClientService {
     
     @Autowired
     private IDaoProduct daoProduct;
+    
+    @Autowired
+    private IDaoBill daoBill;
 
     @Override
     @Transactional(readOnly = true)
@@ -60,6 +64,32 @@ public class ClientServiceImpl implements IClientService {
     @Transactional(readOnly = true)
     public List<Product> findByName(String term) {
 	return daoProduct.findByNameLikeIgnoreCase("%"+term+"%");
+    }
+
+    @Override
+    @Transactional
+    public void saveBill(Bill bill) {
+	daoBill.save(bill);
+	
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Product findProductById(Long id) {
+	return daoProduct.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Bill findBillById(Long id) {
+	return daoBill.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBill(Long id) {
+	daoBill.deleteById(id);
+	
     }
 
 }

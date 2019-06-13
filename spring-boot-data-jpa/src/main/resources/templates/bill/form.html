@@ -28,7 +28,9 @@
 					<div class="form-group row">
 						<label for="Description" class="col-sm-2 col-form-label" th:text="'Description'" />
 						<div class="col-sm-6">
-							<input type="text" th:field="*{description}" class="form-control" />
+							<input type="text" th:field="*{description}" class="form-control"
+								th:errorclass="'form-control is-invalid'" />
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
 						</div>
 					</div>
 
@@ -60,9 +62,9 @@
 						</thead>
 						<tbody></tbody>
 					</table>
-
-					<h5><span class="badge badge-secondary" id="great_total">0</span></h5>
-                    <div class="form-group row">
+					<h5>TOTAL <span class="badge badge-secondary" id="great_total">0</span> euros</h5>
+					
+					<div class="form-group row">
                         <div class="col-sm-6">    
                     <input type="submit" th:value="${title}" class="btn btn-secondary" />
                     </div>
