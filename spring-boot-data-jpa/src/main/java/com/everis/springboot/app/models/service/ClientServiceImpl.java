@@ -46,6 +46,12 @@ public class ClientServiceImpl implements IClientService {
 
 	return daoClient.findById(id).orElse(null);
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Client fetchByIdWithBills(Long id) {
+	return daoClient.fetchByIdWithBills(id);
+    }
 
     @Override
     @Transactional
@@ -91,5 +97,13 @@ public class ClientServiceImpl implements IClientService {
 	daoBill.deleteById(id);
 	
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Bill fetchBillByIdWithClientWithBillItemWithProduct(Long id) {
+	return daoBill.fetchByIdWithClientWithBillItemWithProduct(id);
+    }
+
+   
 
 }

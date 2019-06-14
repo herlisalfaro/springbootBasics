@@ -47,7 +47,7 @@ public class ClientController {
 
     @GetMapping("/look/{id}")
     public String look(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
-	Client client = clientService.findOne(id);
+	Client client = clientService.fetchByIdWithBills(id);
 	if (client == null) {
 	    flash.addFlashAttribute("error", "Client Does Not Exist");
 	    return "redirect:/listing";
