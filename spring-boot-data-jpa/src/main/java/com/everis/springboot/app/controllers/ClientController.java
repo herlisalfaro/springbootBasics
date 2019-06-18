@@ -2,14 +2,22 @@ package com.everis.springboot.app.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Map;
+import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.logging.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.*;
 import org.springframework.http.*;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,11 +35,14 @@ import com.everis.springboot.app.util.paginator.PageRender;
 @SessionAttributes("client")
 public class ClientController {
 
+    protected final Log logger = LogFactory.getLog(this.getClass());
+    
     @Autowired
     private IClientService clientService;
     @Autowired
     private IUploadFileService uploadFileService;
 
+    @Secured(value = { "ROLE_USER" }) 
     @GetMapping(value = "/uploads/{filename:.+}")
     public ResponseEntity<Resource> showPicture(@PathVariable String filename) {
 	Resource resource = null;
@@ -45,6 +56,8 @@ public class ClientController {
 		.body(resource);
     }
 
+    
+    @Secured(value = { "ROLE_USER" })
     @GetMapping("/look/{id}")
     public String look(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 	Client client = clientService.fetchByIdWithBills(id);
@@ -58,8 +71,40 @@ public class ClientController {
 
     }
 
-    @RequestMapping(value = "/listing", method = RequestMethod.GET)
-    public String clientListing(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+    @RequestMapping(value = {"/listing","/"}, method = RequestMethod.GET)
+    public String clientListing(@RequestParam(name = "page", defaultValue = "0") int page, Model model, 
+	    Authentication authentication,
+	    HttpServletRequest request) {
+	
+	if(authentication != null) {
+	    logger.info("Hello auth User, your username is: " + authentication.getName());
+	}
+	
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	if(auth != null) {
+	    logger.info("Static Mode: Hello auth User, your username is: " + auth.getName());
+	}
+	
+	if(hasRole("ROLE_ADMIN")) {
+	    logger.info("Hello, " + auth.getName() + ", You've Got Access!");
+	}else {
+	    logger.info("Sorry, " + auth.getName() + ", You Do Not Have Access");
+	}
+	
+	/*Short Ways to validate Roles*/
+	SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,"ROLE_");
+	if(securityContext.isUserInRole("ADMIN")) {
+	    logger.info("Using SecurityContextHolderAwareRequestWrapper: Hello, " + auth.getName() + ", You've Got Access!");
+	}else {
+	    logger.info("Using SecurityContextHolderAwareRequestWrapper: Sorry, " + auth.getName() + ", You Do Not Have Access");
+	}
+	
+	if(request.isUserInRole("ROLE_ADMIN")) {
+	    logger.info("Using HttpServletRequest: Hello, " + auth.getName() + ", You've Got Access!");
+	}else {
+	    logger.info("Using HttpServletRequest: Sorry, " + auth.getName() + ", You Do Not Have Access");
+	}
+	
 	Pageable pageRequest = PageRequest.of(page, 5);
 	Page<Client> clients = clientService.findAll(pageRequest);
 	PageRender<Client> pageRender = new PageRender<>("/listing", clients);
@@ -70,6 +115,7 @@ public class ClientController {
 
     }
 
+    @Secured(value = { "ROLE_ADMIN" }) 
     @RequestMapping(value = "/form")
     public String create(Map<String, Object> model) {
 	Client client = new Client();
@@ -79,6 +125,7 @@ public class ClientController {
 
     }
 
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = "/form/{id}")
     public String edit(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 	Client client = null;
@@ -98,7 +145,8 @@ public class ClientController {
 	return "form";
 
     }
-
+    
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = "/form", method = RequestMethod.POST)
     public String save(@Valid Client client, BindingResult result, Model model,
 	    @RequestParam("file") MultipartFile picture, RedirectAttributes flash, SessionStatus status) {
@@ -133,6 +181,7 @@ public class ClientController {
 
     }
 
+    @Secured(value = { "ROLE_ADMIN" })
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 	if (id > 0) {
@@ -144,6 +193,39 @@ public class ClientController {
 	    }
 	}
 	return "redirect:/listing";
+    }
+    
+    
+    private boolean hasRole(String role) {
+	
+	SecurityContext context = SecurityContextHolder.getContext();
+	
+	if(context == null) {
+	    return false;
+	}
+	
+	Authentication auth = context.getAuthentication();
+	
+	if(auth == null) {
+	    return false;
+	}
+	
+	Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+	return authorities.contains(new SimpleGrantedAuthority(role));
+	
+	/*
+	 * Manual way to validate roles:
+	 * 
+	 * for(GrantedAuthority authority: authorities) {
+	
+	    if(role.equals(authority.getAuthority())) {
+		logger.info("Hello, " + auth.getName() + ", Your Role Is: " + authority.getAuthority());
+		return true;
+	    }
+	}
+	return false;
+	 */
     }
 
 }

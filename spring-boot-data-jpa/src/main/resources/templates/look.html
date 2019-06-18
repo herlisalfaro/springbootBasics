@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="layout/layout :: head" />
 
@@ -14,11 +14,14 @@
             <div class="card-header" th:text="${title}"></div>
             <div class="card-body">
                 <h4 class="card-title">
-                    <a th:href="@{'/bill/form/' + ${client.id}}" class="btn btn-secondary btn-xs"
-                                    th:text="'Create New Bill'"></a>
+					<a sec:authorize="hasRole('ROLE_ADMIN')" 
+					    th:href="@{'/bill/form/' + ${client.id}}" 
+					    class="btn btn-secondary btn-xs"
+                        th:text="'Create New Bill'"></a>
                 </h4>
                 
-                <img th:if="${#strings.length(client.picture) > 0}" class="img-thumbnail rounded float-left" style="max-width: 25%;"
+				<img th:if="${#strings.length(client.picture) > 0}" 
+					class="img-thumbnail rounded float-left" style="max-width: 25%;"
                     th:src="@{'/uploads/'} + ${client.picture}" th:alt="${client.picture}">
 
                 <ul class="list-group">
@@ -40,8 +43,8 @@
                         <th>DESCRIPTION</th>
                         <th>CREATED_AT</th>
 						<th>TOTAL</th>
-						<th>DETAILS</th>
-						<th>DELETE</th>
+						<th sec:authorize="hasRole('ROLE_ADMIN')">DETAILS</th>
+						<th sec:authorize="hasRole('ROLE_ADMIN')">DELETE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,8 +53,12 @@
                         <td th:text="${bill.description}"></td>
                         <td th:text="${bill.createdAt}"></td>
 						<td th:text="${bill.total}"></td>
-						<td><a class ="btn btn-primary btn-sm" th:href="@{'/bill/look/' + ${bill.id}}" th:text="'Details'"></a></td>
-						<td><a class ="btn btn-danger btn-sm" th:href="@{'/bill/delete/' + ${bill.id}}" th:text="'Delete'"
+						<td sec:authorize="hasRole('ROLE_ADMIN')"><a 
+							class ="btn btn-primary btn-sm" 
+							th:href="@{'/bill/look/' + ${bill.id}}" th:text="'Details'"></a></td>
+						<td sec:authorize="hasRole('ROLE_ADMIN')"><a 
+							class ="btn btn-danger btn-sm" th:href="@{'/bill/delete/' + ${bill.id}}" 
+							th:text="'Delete'"
 							onclick="return confirm('Are you sure you want to delete the bill?');"></a></td>
                         </tr>
                     </tbody>
